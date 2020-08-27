@@ -25,7 +25,7 @@ scene.camera_follow_sprite(running_man)
 
 #create tileset
 tiles.set_tilemap(tilemap("""level"""))
-scene.set_background_color(0)
+scene.set_background_color(6)
 #create gravity and jump
 canDoublejump = True
 controller.move_sprite(running_man ,50, 0) 

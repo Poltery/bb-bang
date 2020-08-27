@@ -24,7 +24,7 @@ running_man.ay = 200
 scene.cameraFollowSprite(running_man)
 // create tileset
 tiles.setTilemap(tilemap`level`)
-scene.setBackgroundColor(0)
+scene.setBackgroundColor(6)
 // create gravity and jump
 let canDoublejump = true
 controller.moveSprite(running_man, 50, 0)
