@@ -22,7 +22,6 @@ running_man = sprites.create(img("""
 """))
 running_man.ay = 200
 scene.camera_follow_sprite(running_man)
-
 #create tileset
 tiles.set_tilemap(tilemap("""level"""))
 scene.set_background_color(6)
