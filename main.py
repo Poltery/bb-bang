@@ -2,7 +2,7 @@
 info.player1.set_score(0)
 info.player1.set_life(3)
 #Create Character
-running_man = sprites.create(img("""
+running_man_right = img("""
     . . . . . . . . . . . . . . . .
     . . . f f f f f f . . . . . . .
     . . f 1 1 1 1 1 1 f . . . . . .
@@ -19,11 +19,39 @@ running_man = sprites.create(img("""
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
-"""),
+""")
+running_man_left = img("""
+    . . . . . . . . . . . . . . . .
+    . . . f f f f f f . . . . . . .
+    . . f 1 1 1 1 1 1 f . . . . . .
+    . b f 1 1 f 1 f 1 f b . . . . .
+    b . f 1 1 f 1 f 1 f . b . . . .
+    b . f 1 1 1 1 1 1 f . b . . . .
+    . b b f f f f f f . . b . . . .
+    b b b f 8 8 8 8 f . f b f f f .
+    b b b f 8 8 8 8 f f c c c c c f
+    c c c f 8 8 8 8 f f c f f f f .
+    . c c f 8 8 8 8 f f c f . . . .
+    . . c f f f f f f . f . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+""")
+running_man = sprites.create(running_man_right,
 SpriteKind.player)
 running_man.ay = 200
 scene.camera_follow_sprite(running_man)
 animation.run_image_animation(running_man, [])
+
+def face_right():
+    running_man.set_image(running_man_right)
+controller.player1.on_button_event(ControllerButton.RIGHT, ControllerButtonEvent.PRESSED, face_right)
+
+def face_left():
+    running_man.set_image(running_man_left)
+controller.player1.on_button_event(ControllerButton.LEFT, ControllerButtonEvent.PRESSED, face_left)
+
 #create tileset
 tiles.set_tilemap(tilemap("""level"""))
 scene.set_background_color(6)
@@ -132,10 +160,8 @@ def on_overlap2(sprite, otherSprite):
     info.change_life_by(-1)
 sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_overlap2)
 #Create projectiles
-def on_update_interval():
-    pass
-game.on_update_interval(100, on_update_interval)
-    bb = sprites.create(img("""
+def on_event_pressed():
+    bb = sprites.create_projectile_from_sprite(img("""
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
@@ -152,47 +178,29 @@ game.on_update_interval(100, on_update_interval)
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-    """),SpriteKind.projectile)
-def on_update():
-    bb = sprites.create(img("""
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-    """),SpriteKind.projectile)
-game.on_update(on_update)
-def on_button_event_b_pressed():
-    bb = sprites.create(img("""
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-        . . . . . . . . . . . . . . . .
-    """),SpriteKind.projectile)
-controller.B.on_event(ControllerButtonEvent.PRESSED, on_button_event_b_pressed)
+    """), running_man, 50, 0)
+controller.B.on_event(ControllerButtonEvent.PRESSED, on_event_pressed)
+
+# def on_button_event_b_pressed():
+#     bb = sprites.create(img("""
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . b b b . . . . . .
+#         . . . . . . b b b b b . . . . .
+#         . . . . . . b b b b b . . . . .
+#         . . . . . . b b b b b . . . . .
+#         . . . . . . . b b b . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#         . . . . . . . . . . . . . . . .
+#     """),SpriteKind.projectile)
+# controller.B.on_event(ControllerButtonEvent.PRESSED, on_button_event_b_pressed)
 
 #Create goal
 goal = sprites.create(img("""

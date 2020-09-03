@@ -2,7 +2,7 @@
 info.player1.setScore(0)
 info.player1.setLife(3)
 // Create Character
-let running_man = sprites.create(img`
+let running_man_right = img`
     . . . . . . . . . . . . . . . .
     . . . f f f f f f . . . . . . .
     . . f 1 1 1 1 1 1 f . . . . . .
@@ -19,10 +19,35 @@ let running_man = sprites.create(img`
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
-`, SpriteKind.Player)
+`
+let running_man_left = img`
+    . . . . . . . . . . . . . . . .
+    . . . f f f f f f . . . . . . .
+    . . f 1 1 1 1 1 1 f . . . . . .
+    . b f 1 1 f 1 f 1 f b . . . . .
+    b . f 1 1 f 1 f 1 f . b . . . .
+    b . f 1 1 1 1 1 1 f . b . . . .
+    . b b f f f f f f . . b . . . .
+    b b b f 8 8 8 8 f . f b f f f .
+    b b b f 8 8 8 8 f f c c c c c f
+    c c c f 8 8 8 8 f f c f f f f .
+    . c c f 8 8 8 8 f f c f . . . .
+    . . c f f f f f f . f . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+    . . . f . . . . f . . . . . . .
+`
+let running_man = sprites.create(running_man_right, SpriteKind.Player)
 running_man.ay = 200
 scene.cameraFollowSprite(running_man)
 animation.runImageAnimation(running_man, [])
+controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function face_right() {
+    running_man.setImage(running_man_right)
+})
+controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function face_left() {
+    running_man.setImage(running_man_left)
+})
 // create tileset
 tiles.setTilemap(tilemap`level`)
 scene.setBackgroundColor(6)
@@ -132,11 +157,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_overlap2(spri
     info.changeLifeBy(-1)
 })
 // Create projectiles
-game.onUpdate(function on_update() {
-    
-})
-controller.B.onEvent(ControllerButtonEvent.Pressed, function on_button_event_b_pressed() {
-    let bb = sprites.create(img`
+controller.B.onEvent(ControllerButtonEvent.Pressed, function on_event_pressed() {
+    let bb = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
@@ -153,8 +175,28 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function on_button_event_b_p
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-    `, SpriteKind.Projectile)
+    `, running_man, 50, 0)
 })
+//  def on_button_event_b_pressed():
+//      bb = sprites.create(img("""
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . b b b . . . . . .
+//          . . . . . . b b b b b . . . . .
+//          . . . . . . b b b b b . . . . .
+//          . . . . . . b b b b b . . . . .
+//          . . . . . . . b b b . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//          . . . . . . . . . . . . . . . .
+//      """),SpriteKind.projectile)
+//  controller.B.on_event(ControllerButtonEvent.PRESSED, on_button_event_b_pressed)
 // Create goal
 let goal = sprites.create(img`
     . . . 2 4 1 . .
