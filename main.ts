@@ -19,7 +19,7 @@ let running_man = sprites.create(img`
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
-`)
+`, SpriteKind.Player)
 running_man.ay = 200
 scene.cameraFollowSprite(running_man)
 animation.runImageAnimation(running_man, [])
@@ -55,8 +55,11 @@ let puff = sprites.create(img`
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
-`)
+`, SpriteKind.Enemy)
 puff.ay = 200
+tiles.placeOnTile(puff, tiles.getTileLocation(10, 13))
+tiles.placeOnTile(puff, tiles.getTileLocation(17, 12))
+tiles.placeOnTile(puff, tiles.getTileLocation(33, 11))
 let boss_puff = sprites.create(img`
     ................................................................
     ................................................................
@@ -129,6 +132,29 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_overlap2(spri
     info.changeLifeBy(-1)
 })
 // Create projectiles
+game.onUpdate(function on_update() {
+    
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function on_button_event_b_pressed() {
+    let bb = sprites.create(img`
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    `, SpriteKind.Projectile)
+})
 // Create goal
 let goal = sprites.create(img`
     . . . 2 4 1 . .
@@ -151,7 +177,7 @@ let goal = sprites.create(img`
     . . . . b 1 . .
     . . . 4 5 5 5 .
     . . 4 5 5 5 5 5
-`)
+`, SpriteKind.Player)
 tiles.placeOnTile(goal, tiles.getTileLocation(48, 12))
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function on_overlap(sprite: Sprite, otherSprite: Sprite) {
     game.over()

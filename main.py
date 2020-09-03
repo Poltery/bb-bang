@@ -19,7 +19,8 @@ running_man = sprites.create(img("""
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
     . . . f . . . . f . . . . . . .
-"""))
+"""),
+SpriteKind.player)
 running_man.ay = 200
 scene.camera_follow_sprite(running_man)
 animation.run_image_animation(running_man, [])
@@ -53,8 +54,12 @@ puff = sprites.create(img("""
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
-"""))
+"""),
+SpriteKind.enemy)
 puff.ay = 200
+tiles.place_on_tile(puff, tiles.get_tile_location(10, 13))
+tiles.place_on_tile(puff, tiles.get_tile_location(17, 12))
+tiles.place_on_tile(puff, tiles.get_tile_location(33, 11))
 boss_puff = sprites.create(img("""
     ................................................................
     ................................................................
@@ -127,7 +132,67 @@ def on_overlap2(sprite, otherSprite):
     info.change_life_by(-1)
 sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_overlap2)
 #Create projectiles
-
+def on_update_interval():
+    pass
+game.on_update_interval(100, on_update_interval)
+    bb = sprites.create(img("""
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    """),SpriteKind.projectile)
+def on_update():
+    bb = sprites.create(img("""
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    """),SpriteKind.projectile)
+game.on_update(on_update)
+def on_button_event_b_pressed():
+    bb = sprites.create(img("""
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . b b b b b . . . . .
+        . . . . . . . b b b . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    """),SpriteKind.projectile)
+controller.B.on_event(ControllerButtonEvent.PRESSED, on_button_event_b_pressed)
 
 #Create goal
 goal = sprites.create(img("""
@@ -151,7 +216,8 @@ goal = sprites.create(img("""
     . . . . b 1 . .
     . . . 4 5 5 5 .
     . . 4 5 5 5 5 5
-"""))
+"""),
+SpriteKind.player)
 tiles.place_on_tile(goal, tiles.get_tile_location(48, 12))
 def on_overlap(sprite, otherSprite):
     game.over()
