@@ -83,8 +83,6 @@ let puff = sprites.create(img`
 `, SpriteKind.Enemy)
 puff.ay = 200
 tiles.placeOnTile(puff, tiles.getTileLocation(10, 13))
-tiles.placeOnTile(puff, tiles.getTileLocation(17, 12))
-tiles.placeOnTile(puff, tiles.getTileLocation(33, 11))
 let boss_puff = sprites.create(img`
     ................................................................
     ................................................................
@@ -164,18 +162,18 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function on_event_pressed() 
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . . b b b . . . . . .
+        . . . . . . . f f f . . . . . .
+        . . . . . . f c c b f . . . . .
+        . . . . . . f c b d f . . . . .
+        . . . . . . f b b b f . . . . .
+        . . . . . . . f f f . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-    `, running_man, 50, 0)
+    `, running_man, 100, 0)
 })
 //  def on_button_event_b_pressed():
 //      bb = sprites.create(img("""
@@ -219,15 +217,17 @@ let goal = sprites.create(img`
     . . . . b 1 . .
     . . . 4 5 5 5 .
     . . 4 5 5 5 5 5
-`, SpriteKind.Player)
+`, SpriteKind.Food)
 tiles.placeOnTile(goal, tiles.getTileLocation(48, 12))
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function on_overlap(sprite: Sprite, otherSprite: Sprite) {
-    game.over()
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function on_overlap(sprite: Sprite, otherSprite: Sprite) {
+    game.over(true, effects.starField)
 })
 // Create music
-music.playMelody("E E E Eb E E C C", 300)
-music.playMelody("B B B B", 150)
-music.playMelody("Ab A Ab A Ab A Ab A", 300)
-music.playMelody("E E E Eb E E C C", 300)
-music.playMelody("B B B B", 150)
-music.playMelody("Ab A Ab A - Bb A", 300)
+forever(function on_forever() {
+    music.playMelody("E E E Eb E E C C", 300)
+    music.playMelody("B B B B", 150)
+    music.playMelody("Ab A Ab A Ab A Ab A", 300)
+    music.playMelody("E E E Eb E E C C", 300)
+    music.playMelody("B B B B", 150)
+    music.playMelody("Ab A Ab A - Bb A A", 300)
+})

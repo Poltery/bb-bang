@@ -86,8 +86,6 @@ puff = sprites.create(img("""
 SpriteKind.enemy)
 puff.ay = 200
 tiles.place_on_tile(puff, tiles.get_tile_location(10, 13))
-tiles.place_on_tile(puff, tiles.get_tile_location(17, 12))
-tiles.place_on_tile(puff, tiles.get_tile_location(33, 11))
 boss_puff = sprites.create(img("""
     ................................................................
     ................................................................
@@ -167,18 +165,18 @@ def on_event_pressed():
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-        . . . . . . . b b b . . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . b b b b b . . . . .
-        . . . . . . . b b b . . . . . .
+        . . . . . . . f f f . . . . . .
+        . . . . . . f c c b f . . . . .
+        . . . . . . f c b d f . . . . .
+        . . . . . . f b b b f . . . . .
+        . . . . . . . f f f . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
-    """), running_man, 50, 0)
+    """), running_man, 100, 0)
 controller.B.on_event(ControllerButtonEvent.PRESSED, on_event_pressed)
 
 # def on_button_event_b_pressed():
@@ -225,15 +223,17 @@ goal = sprites.create(img("""
     . . . 4 5 5 5 .
     . . 4 5 5 5 5 5
 """),
-SpriteKind.player)
+SpriteKind.food)
 tiles.place_on_tile(goal, tiles.get_tile_location(48, 12))
 def on_overlap(sprite, otherSprite):
-    game.over()
-sprites.on_overlap(SpriteKind.player, SpriteKind.player, on_overlap)
+    game.over(True, effects.star_field)
+sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_overlap)
 #Create music
-music.play_melody("E E E Eb E E C C", 300)
-music.play_melody("B B B B", 150)
-music.play_melody("Ab A Ab A Ab A Ab A", 300)
-music.play_melody("E E E Eb E E C C", 300)
-music.play_melody("B B B B", 150)
-music.play_melody("Ab A Ab A - Bb A", 300)
+def on_forever():
+    music.play_melody("E E E Eb E E C C", 300)
+    music.play_melody("B B B B", 150)
+    music.play_melody("Ab A Ab A Ab A Ab A", 300)
+    music.play_melody("E E E Eb E E C C", 300)
+    music.play_melody("B B B B", 150)
+    music.play_melody("Ab A Ab A - Bb A A", 300)
+forever(on_forever)
